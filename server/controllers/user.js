@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const { Order } = require("../models/order");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 exports.userById = (req, res, next, id) => {
@@ -13,7 +12,3 @@ exports.userById = (req, res, next, id) => {
     next();
   });
 };
-
-
-
- 
