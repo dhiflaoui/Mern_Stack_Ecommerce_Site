@@ -9,6 +9,10 @@ const cors = require("cors");
 //import routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const categoryRoutes = require("./routes/category");
+const productRoutes = require("./routes/product");
+//const braintreeRoutes = require('./routes/braintree');
+//const orderRoutes = require('./routes/order');
 
 //app
 const app = express();
@@ -26,6 +30,10 @@ mongoose.connection.on("error", (err) => {
 //routes middleware
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
+//app.use("/api", braintreeRoutes);
+//app.use("/api", orderRoutes);
 
 //middleware
 app.use(morgan("dev"));
