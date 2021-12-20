@@ -38,7 +38,7 @@ router.get("/products", list);
 router.get("/products/search", listSearch);
 router.get("/products/related/:productId", listRelated);
 router.get("/products/categories", listCategories);
-router.post("/products/by/search", listBySearch);
+router.post("/products/by/search", listBySearch);// we use post instead of post cause we need th req.body
 router.get("/product/photo/:productId", photo); */
 
 router.param("userId", userById);

@@ -133,7 +133,7 @@ exports.update = (req, res) => {
  * if no params are sent, then all products are returned
  */
 
-/* exports.list = (req, res) => {
+exports.list = (req, res) => {
   let order = req.query.order ? req.query.order : "asc";
   let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
   let limit = req.query.limit ? parseInt(req.query.limit) : 6;
@@ -152,7 +152,7 @@ exports.update = (req, res) => {
       res.json(products);
     });
 };
- */
+
 /**
  * it will find the products based on the req product category
  * other products that has the same category, will be returned
@@ -186,15 +186,15 @@ exports.listCategories = (req, res) => {
 };
 
 /**
- * list products by search
+ * list products by search 
  * we will implement product search in react frontend
  * we will show categories in checkbox and price range in radio buttons
  * as the user clicks on those checkbox and radio buttons
  * we will make api request and show the products to users based on what he wants
  */
 
-/* exports.listBySearch = (req, res) => {
-  let order = req.body.order ? req.body.order : "desc";
+exports.listBySearch = (req, res) => {
+  let order = req.body.order ? req.body.order : "desc"; 
   let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
   let skip = parseInt(req.body.skip);
@@ -286,4 +286,4 @@ exports.decreaseQuantity = (req, res, next) => {
     }
     next();
   });
-}; */
+};
