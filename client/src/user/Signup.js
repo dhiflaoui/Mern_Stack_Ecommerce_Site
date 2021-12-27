@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import Layout from "../Core/Layout";
-import axios from "axios"; 
-import {API} from '../config';
-import { makeStyles } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { Alert, AlertTitle } from "@material-ui/lab";
+import { Link } from "react-router-dom";
+import { signup } from "../auth";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -26,84 +27,113 @@ const Signup = () => {
   const classes = useStyles();
 
   const initialState = {
-    name:'',
-    email:'',
-    password:'',
-    error:'',
-    success:false,
-  }
+    name: "",
+    email: "",
+    password: "",
+    error: "",
+    success: false,
+  };
   // create state variables for each input
   const [values, setValues] = useState(initialState);
-  const{name,email,password}=values
-  const signup= (user)=>{
-    axios.post(`${API}/signup`, { 
-      /* headers:{
-        Accept:"application/json",
-        "Content-Type":"application/json"
-    }, */
-    body: JSON.stringify(user)
-    })
-    .then((response) => {
-      setValues(response.data);
-    });
-  };
-  const handleClearfields =()=>{
+  const { name, email, password, success, error } = values;
+
+  const handleClearfields = () => {
     setValues({ ...initialState });
-  }
-  const handleSubmit = e => {
+  };
+  const handleSubmit = (e) => {
     e.preventDefault();
-    signup({name: name ,email : email ,password: password});
-    
+    setValues({ ...values, error: false });
+    signup({ name, email, password }).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error, success: false });
+      } else {
+        setValues({
+          name: "",
+          email: "",
+          password: "",
+          error: "",
+          success: true,
+        });
+      }
+    });
+
     handleClearfields();
   };
-  
-  const handleChange = name => e => {
-    setValues({...values, error:false, [name]:e.target.value});
+
+  const handleChange = (name) => (e) => {
+    setValues({ ...values, error: false, [name]: e.target.value });
   };
 
   const signUpForm = () => (
-    <form >
+    <form>
       <div className={classes.root}>
         <TextField
           label="Name"
           variant="filled"
           required
-          value={values.name}
-          onChange={handleChange('name')}
+          value={name}
+          onChange={handleChange("name")}
         />
         <TextField
-        label="Email"
-        variant="filled"
-        type="email"
-        required
-        value={values.email}
-        onChange={handleChange('email')}
-      />
-      <TextField
-        label="Password"
-        variant="filled"
-        type="password"
-        required
-        value={values.password}
-        onChange={handleChange('password')}
-      />
-      <div>
-        <Button variant="contained" onClick={handleClearfields}>Cancel</Button>
-        <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
-          Signup
-        </Button>
+          label="Email"
+          variant="filled"
+          type="email"
+          required
+          value={email}
+          onChange={handleChange("email")}
+        />
+        <TextField
+          label="Password"
+          variant="filled"
+          type="password"
+          required
+          value={password}
+          onChange={handleChange("password")}
+        />
+        <div>
+          <Button variant="contained" onClick={handleClearfields}>
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            Signup
+          </Button>
         </div>
       </div>
     </form>
   );
+
+  const showError = () => (
+    <div style={{ display: error ? "" : "none" }}>
+      <Alert severity="error">
+        <AlertTitle>{error}</AlertTitle>
+      </Alert>
+    </div>
+  );
+  const showSucces = () => (
+    <div style={{ display: success ? "" : "none" }}>
+      <Alert severity="success">
+        <AlertTitle>
+          New account is created.Please <Link to="/signin">Signin!</Link>
+        </AlertTitle>
+      </Alert>
+    </div>
+  );
+
   return (
     <div>
       <Layout
         title="SignUp page"
         description="SignUp To Node React E-commerce App"
       >
+        {showSucces()}
+        {showError()}
         {signUpForm()}
-        {JSON.stringify(values)}
+        {/* {JSON.stringify(values)} */}
       </Layout>
     </div>
   );

@@ -9,6 +9,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import { signout, isAuthenticated } from "../auth";
 import "./Navbar.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,20 +60,37 @@ const Navbar = ({ history }) => {
           <Link to="/" className={classes.link} style={isActive(history, "/")}>
             Home
           </Link>
-          <Link
-            to="/Signin"
-            className={classes.link}
-            style={isActive(history, "/Signin")}
-          >
-            SignIn
-          </Link>
-          <Link
-            to="/Signup"
-            className={classes.link}
-            style={isActive(history, "/Signup")}
-          >
-            SignUp
-          </Link>
+          {!isAuthenticated() && (
+            <>
+              <Link
+                to="/Signin"
+                className={classes.link}
+                style={isActive(history, "/Signin")}
+              >
+                SignIn
+              </Link>
+              <Link
+                to="/Signup"
+                className={classes.link}
+                style={isActive(history, "/Signup")}
+              >
+                SignUp
+              </Link>
+            </>
+          )}
+          {isAuthenticated() && (
+            <span
+              onClick={() =>
+                signout(() => {
+                  history.push("/");
+                })
+              }
+              className={classes.link}
+              style={{ cursor: "pointer", color: "#ffff" }}
+            >
+              SignOut
+            </span>
+          )}
         </div>
       </Toolbar>
     </AppBar>
