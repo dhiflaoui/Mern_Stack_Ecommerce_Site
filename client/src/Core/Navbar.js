@@ -60,6 +60,13 @@ const Navbar = ({ history }) => {
           <Link to="/" className={classes.link} style={isActive(history, "/")}>
             Home
           </Link>
+          <Link
+            to="/user/dashboard"
+            className={classes.link}
+            style={isActive(history, "/user/dashboard")}
+          >
+            Dashboard
+          </Link>
           {!isAuthenticated() && (
             <>
               <Link
@@ -78,6 +85,29 @@ const Navbar = ({ history }) => {
               </Link>
             </>
           )}
+          {/* 
+          user dashboard
+          {isAuthenticated() && isAuthenticated().user.role === 0 && (
+            <Link
+              to="/user/dashboard"
+              className={classes.link}
+              style={isActive(history, "/user/dashboard")}
+            >
+              Dashboard
+            </Link>
+          )} 
+
+        admin dashboard
+          {isAuthenticated() && isAuthenticated().user.role === 1 && (
+            <Link
+              to="/admin/dashboard"
+              className={classes.link}
+              style={isActive(history, "/admin/dashboard")}
+            >
+              Dashboard
+            </Link>
+          )}*/}
+
           {isAuthenticated() && (
             <span
               onClick={() =>

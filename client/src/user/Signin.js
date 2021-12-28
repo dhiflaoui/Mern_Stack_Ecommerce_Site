@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Layout from "../Core/Layout";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Container } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Alert, AlertTitle } from "@material-ui/lab";
-import { signin, authenticate } from "../auth";
+import { signin, authenticate, isAuthenticated } from "../auth";
 import { Redirect } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     "& .MuiTextField-root": {
       margin: theme.spacing(1),
-      width: "300px",
+      width: "550px",
     },
     "& .MuiButtonBase-root": {
       margin: theme.spacing(2),
@@ -36,6 +36,7 @@ const Signin = () => {
   // create state variables for each input
   const [values, setValues] = useState(initialState);
   const { name, email, password, loading, error, redirectToReferrer } = values;
+  const { user } = isAuthenticated();
 
   const handleClearfields = () => {
     setValues({ ...initialState });
@@ -116,6 +117,13 @@ const Signin = () => {
     );
   const redirectUser = () => {
     if (redirectToReferrer) {
+      if (user && user.role === 1) {
+        return <Redirect to="/admin/dashboard" />;
+      } else {
+        return <Redirect to="/user/dashboard" />;
+      }
+    }
+    if (isAuthenticated()) {
       return <Redirect to="/" />;
     }
   };

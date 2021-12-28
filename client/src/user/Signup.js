@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     "& .MuiTextField-root": {
       margin: theme.spacing(1),
-      width: "300px",
+      width: "550px",
     },
     "& .MuiButtonBase-root": {
       margin: theme.spacing(2),
