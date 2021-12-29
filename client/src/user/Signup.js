@@ -114,7 +114,7 @@ const Signup = () => {
       </Alert>
     </div>
   );
-  const showSucces = () => (
+  const showSuccess = () => (
     <div style={{ display: success ? "" : "none" }}>
       <Alert severity="success">
         <AlertTitle>
@@ -130,7 +130,7 @@ const Signup = () => {
         title="SignUp page"
         description="SignUp To Node React E-commerce App"
       >
-        {showSucces()}
+        {showSuccess()}
         {showError()}
         {signUpForm()}
         {/* {JSON.stringify(values)} */}
