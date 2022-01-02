@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../Core/Layout";
 import { isAuthenticated } from "../auth";
-import TextField from "@material-ui/core/TextField";
+import { TextField, MenuItem } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core";
 import { createCategory } from "./ApiAdmin";
@@ -22,6 +22,20 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiButtonBase-root": {
       margin: theme.spacing(2),
+    },
+  },
+  imageInput: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  input: {
+    display: "none",
+  },
+  selector: {
+    "& .MuiTextField-root": {
+      margin: theme.spacing(1),
+      width: "25ch",
     },
   },
 }));
@@ -52,7 +66,6 @@ const AddProduct = () => {
     category,
     shipping,
     quantity,
-
     loading,
     error,
     createdProduct,
@@ -67,7 +80,7 @@ const AddProduct = () => {
   };
 
   const handleChange = (name) => (e) => {
-    const value = name === "photo" ? event.target.files[0] : event.target.value;
+    const value = name === "photo" ? e.target.files[0] : e.target.value;
     formData.set(name, value);
     setValues({ ...values, [name]: value });
   };
@@ -94,26 +107,49 @@ const AddProduct = () => {
     });
     handleClearfield();
   };
-
+  const currencies = [
+    {
+      value: "USD",
+      label: "$",
+    },
+    {
+      value: "EUR",
+      label: "€",
+    },
+    {
+      value: "BTC",
+      label: "฿",
+    },
+    {
+      value: "JPY",
+      label: "¥",
+    },
+  ];
   const newProductForm = () => (
     <form>
-      {/*  TO REPLCE WITH image picker */}
-      <div className={classes.root}>
-        <TextField
-          label="photo"
-          variant="filled"
-          type="text"
-          required
-          value={photo}
-          onChange={handleChange("photo")}
+      {/* image picker */}
+      <div className={classes.imageInput}>
+        <input
+          accept="image/*"
+          className={classes.input}
+          id="contained-button-file"
+          multiple
+          type="file"
         />
-        {/* */}
+        <label htmlFor="contained-button-file">
+          <Button variant="contained" color="primary" component="span">
+            Upload Image
+          </Button>
+        </label>
+      </div>
+      {/* */}
+      <div>
         <TextField
           label="Name"
           variant="filled"
           type="text"
           required
-          value={name}
+          /* value={name} */
           onChange={handleChange("name")}
           autoFocus
         />
@@ -130,36 +166,41 @@ const AddProduct = () => {
           variant="filled"
           type="text"
           required
-          value={price}
+          /*  value={price} */
           onChange={handleChange("price")}
         />
-        {/*  TO REPLCE WITH SELECTOR */}
-        <TextField
-          label="Category"
-          variant="filled"
-          type="text"
-          required
-          value={category}
-          onChange={handleChange("category")}
-        />
-        <TextField
-          label="Name"
-          variant="filled"
-          type="text"
-          required
-          value={shipping}
-          onChange={handleChange("shipping")}
-        />
+        {/*  SELECTOR */}
+        <div className={classes.selector} noValidate autoComplete="off">
+          <TextField
+            id="standard-select-category"
+            select
+            label="category"
+            value={category}
+            onChange={handleChange("category")}
+            helperText="Please select Category"
+          >
+            {currencies.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="standard-select-shipping"
+            select
+            label="shipping"
+            value={shipping}
+            onChange={handleChange("shipping")}
+            helperText="Please select Shipping"
+          >
+            {currencies.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
         {/* */}
-        <TextField
-          label="Name"
-          variant="filled"
-          type="text"
-          required
-          value={shipping}
-          onChange={handleChange("shipping")}
-        />
-
         <div>
           <Button variant="contained" onClick={handleClearfield}>
             Cancel
@@ -204,7 +245,7 @@ const AddProduct = () => {
     <div>
       <Layout
         title="Add a new Product"
-        description={`G'day ${user.name}, ready to add a new Product?`}
+        description={`G'day , ready to add a new Product?`}
       >
         {showLoading()}
         {showError()}
